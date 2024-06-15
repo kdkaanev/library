@@ -35,31 +35,34 @@ jobs:
       run: npm run test:ui
 
   deploy_backend:
-
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: build_and_tests
-
     steps:
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Deploy Backend
+        uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service-id: ${{ secrets.BACKEND_API_KEY}}
-          api-key: ${{ secrets.RENDER_KEY }}
-      - name: Sleep for 60 seconds
-        run: sleep 60
-
+          service_id: ${{ secrets.BACKEND_API_KEY}}
+          api_key: ${{ secrets.RENDER_KEY }}
+          clear_cache: true
+          wait_deploy: true
+          github_token: ${{ secrets.TOCKEN_GH}}
+          
   deploy_frontend:
-
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     needs: build_and_tests
-
     steps:
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Deploy Backend
+        uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service-id: ${{ secrets.BACKEND_API_KEY}}
-          api-key: ${{ secrets.RENDER_KEY }}
-      - name: Sleep for 60 seconds
-        run: sleep 60
+          service_id: ${{ secrets.FRONTEND_API_KEY}}
+          api_key: ${{ secrets.RENDER_KEY }}
+          clear_cache: true
+          wait_deploy: true
+          github_token: ${{ secrets.TOCKEN_GH}}
+      
